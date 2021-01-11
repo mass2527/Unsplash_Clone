@@ -1,13 +1,15 @@
 import React from 'react';
-import Header from './components/layout/Header/Header';
-import Main from './components/layout/Main/Main';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
 
 function App() {
   return (
-    <div>
-      <Header />
-      <Main />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/photos/:photoId" component={Home} />
+        <Route path="/" component={Home} />
+      </Switch>
+    </Router>
   );
 }
 

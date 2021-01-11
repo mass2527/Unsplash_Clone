@@ -48,6 +48,8 @@ const Main: React.FC<Props> = () => {
                   profile_image: { large },
                   name,
                   username,
+                  bio,
+                  portfolio_url,
                 },
               }: {
                 id: string;
@@ -56,14 +58,24 @@ const Main: React.FC<Props> = () => {
                   profile_image: { large: string };
                   name: string;
                   username: string;
+                  bio: string;
+                  portfolio_url: string;
                 };
               }) => (
-                <Photo key={id} imageURL={full} userImageURL={large} userName={name} accountName={username} />
+                <Photo
+                  key={id}
+                  imageURL={full}
+                  userImageURL={large}
+                  userName={name}
+                  accountName={username}
+                  bio={bio}
+                  portfolio_url={portfolio_url}
+                  id={id}
+                />
               )
             )}
           </Masonry>
         </ResponsiveMasonry>
-        )
       </S.MainCenter>
     </S.Main>
   );

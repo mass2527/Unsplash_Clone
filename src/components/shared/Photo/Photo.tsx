@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, MouseEvent, useRef, memo } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import UserImageAndName from '../UserImageAndName/UserImageAndName';
 
@@ -28,6 +29,12 @@ const S = {
     :hover {
       opacity: 1;
     }
+
+    @media (max-width: 768px) {
+      :hover {
+        opacity: 0;
+      }
+    }
   `,
 };
 
@@ -36,17 +43,65 @@ interface Props {
   userImageURL: string;
   userName: string;
   accountName?: string;
+  bio?: string;
+  portfolio_url?: string;
+  id: string;
 }
 
-const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName }) => {
+const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName, bio, portfolio_url, id }) => {
+  const [windowInnerWidth, setWindowInnerWidth] = useState(window.innerWidth);
+  const photoRef = useRef<HTMLDivElement | null>(null);
+  const history = useHistory();
+
+  function handleResize() {
+    setWindowInnerWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  function clickPhoto(e: MouseEvent<HTMLDivElement>) {
+    if (e.target !== photoRef.current) return;
+
+    history.push(`/photos/${id}`, {
+      photoId: id,
+    });
+  }
+
   return (
-    <S.Photo>
-      <S.Image src={imageURL} />
-      <S.Overlay>
-        <UserImageAndName userImageURL={userImageURL} userName={userName} accountName={accountName} profileOption />
-      </S.Overlay>
-    </S.Photo>
+    <>
+      {windowInnerWidth <= 768 && (
+        <UserImageAndName
+          userImageURL={userImageURL}
+          userName={userName}
+          accountName={accountName}
+          profileOption
+          bio={bio}
+          portfolio_url={portfolio_url}
+        />
+      )}
+      <S.Photo onClick={clickPhoto}>
+        <S.Image src={imageURL} />
+        <S.Overlay ref={photoRef}>
+          {windowInnerWidth > 768 && (
+            <UserImageAndName
+              userImageURL={userImageURL}
+              userName={userName}
+              accountName={accountName}
+              profileOption
+              bio={bio}
+              portfolio_url={portfolio_url}
+            />
+          )}
+        </S.Overlay>
+      </S.Photo>
+    </>
   );
 };
 
-export default Photo;
+export default memo(Photo);
