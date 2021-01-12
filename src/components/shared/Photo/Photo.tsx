@@ -86,7 +86,7 @@ const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName,
         />
       )}
       <S.Photo onClick={clickPhoto}>
-        <S.Image src={imageURL} />
+        <S.Image className="Image" src={imageURL} />
         <S.Overlay ref={photoRef}>
           {windowInnerWidth > 768 && (
             <UserImageAndName

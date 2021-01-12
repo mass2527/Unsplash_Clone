@@ -30,7 +30,6 @@ const S = {
 
   ModalBox: styled.div`
     width: 100%;
-
     background-color: white;
     border-radius: 3px;
     cursor: default;
@@ -38,7 +37,15 @@ const S = {
     flex-direction: column;
   `,
 
-  PhotoHeader: styled.div``,
+  PhotoHeader: styled.div`
+    position: sticky;
+    top: -40px;
+    background-color: white;
+
+    @media (max-width: 768px) {
+      top: 0px;
+    }
+  `,
 };
 
 interface Props {}

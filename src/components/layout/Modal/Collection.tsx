@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 const S = {
@@ -33,14 +33,24 @@ const S = {
   Photos: styled.div`
     display: flex;
     overflow: hidden;
-    border-radius: 5px;
-    max-height: 290px;
-
+    border-radius: 8px;
     margin-bottom: 10px;
+    max-height: 300px;
+    height: 20vw;
+
+    @media (max-width: 990px) {
+      height: 28vw;
+    }
+
+    @media (max-width: 768px) {
+      height: 67vw;
+      max-height: none;
+    }
   `,
 
   PhotoLeft: styled.div`
     flex: 3;
+    margin-right: 2px;
   `,
 
   PhotoRight: styled.div`
@@ -51,6 +61,14 @@ const S = {
 
   Photo: styled.div`
     flex: 1;
+
+    :nth-child(1) {
+      margin-bottom: 1px;
+    }
+
+    :nth-child(2) {
+      margin-top: 1px;
+    }
   `,
 
   Image: styled.img`
@@ -149,4 +167,4 @@ const Collection: React.FC<Props> = ({ collectionName, numberOfPhotos, curator, 
   );
 };
 
-export default Collection;
+export default memo(Collection);

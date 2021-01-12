@@ -50,7 +50,7 @@ const RelatedCollections: React.FC<Props> = ({ collections }) => {
         <S.Title>Rlated Collections</S.Title>
       </S.Header>
       <S.Main>
-        {console.log(collections)}
+        {/* {console.log(collections)} */}
         {collections.map(
           ({
             id,

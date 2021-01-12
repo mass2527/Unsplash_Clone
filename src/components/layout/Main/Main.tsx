@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { unsplashApi } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
@@ -25,6 +25,20 @@ interface Props {}
 
 const Main: React.FC<Props> = () => {
   const [photos, setPhotos] = useState([]);
+  const divRef = useRef<HTMLDivElement | null>(null);
+
+  const options = {
+    threshold: 0,
+  };
+
+  let callback = (entries: any, observer: any) => {
+    if (!photos) return;
+    entries.forEach((entry: any) => {
+      alert('work');
+    });
+  };
+
+  const observer = new IntersectionObserver(callback, options);
 
   useEffect(() => {
     async function getUnsplashLatestPhotos() {
@@ -35,43 +49,59 @@ const Main: React.FC<Props> = () => {
     getUnsplashLatestPhotos();
   }, []);
 
+  useEffect(() => {
+    if (!divRef.current) return;
+    observer.observe(divRef.current);
+
+    return () => observer.disconnect();
+  }, [photos]);
+
   return (
     <S.Main>
       <S.MainCenter>
         <ResponsiveMasonry columnsCountBreakPoints={{ 0: 1, 768: 2, 992: 3 }}>
           <Masonry gutter="24px">
             {photos.map(
-              ({
-                id,
-                urls: { full },
-                user: {
-                  profile_image: { large },
-                  name,
-                  username,
-                  bio,
-                  portfolio_url,
+              (
+                {
+                  id,
+                  urls: { full },
+                  user: {
+                    profile_image: { large },
+                    name,
+                    username,
+                    bio,
+                    portfolio_url,
+                  },
+                }: {
+                  id: string;
+                  urls: { full: string };
+                  user: {
+                    profile_image: { large: string };
+                    name: string;
+                    username: string;
+                    bio: string;
+                    portfolio_url: string;
+                  };
                 },
-              }: {
-                id: string;
-                urls: { full: string };
-                user: {
-                  profile_image: { large: string };
-                  name: string;
-                  username: string;
-                  bio: string;
-                  portfolio_url: string;
-                };
-              }) => (
-                <Photo
-                  key={id}
-                  imageURL={full}
-                  userImageURL={large}
-                  userName={name}
-                  accountName={username}
-                  bio={bio}
-                  portfolio_url={portfolio_url}
-                  id={id}
-                />
+                index,
+                array
+              ) => (
+                <>
+                  <div>
+                    <Photo
+                      key={id}
+                      imageURL={full}
+                      userImageURL={large}
+                      userName={name}
+                      accountName={username}
+                      bio={bio}
+                      portfolio_url={portfolio_url}
+                      id={id}
+                    />
+                  </div>
+                  {(index + 1) % array.length === 0 && <div ref={divRef}></div>}
+                </>
               )
             )}
           </Masonry>

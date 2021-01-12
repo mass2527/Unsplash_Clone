@@ -44,6 +44,10 @@ const PhotoMiddle: React.FC<Props> = ({ color, imageURL, alt_description }) => {
 
   useEffect(() => {
     imageRef.current?.addEventListener('load', handleLoad);
+
+    return () => {
+      imageRef.current?.removeEventListener('load', handleLoad);
+    };
   }, []);
 
   function handleLoad() {
