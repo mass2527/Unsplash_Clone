@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, MouseEvent, useRef, useState, memo, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, MouseEvent, useRef, useState, memo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { unsplashApi } from '../../../axios/axios';
 import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
+import PhotoFooter from './PhotoFooter';
 import PhotoMiddle from './PhotoMiddle';
+import RelatedCollections from './RelatedCollections';
 
 const S = {
   Modal: styled.div<{ top: number }>`
@@ -37,18 +39,6 @@ const S = {
   `,
 
   PhotoHeader: styled.div``,
-
-  // PhotoMiddle: styled.div`
-  //   padding: 10px 16px;
-
-  //   display: grid;
-  //   place-items: center center;
-  //   border: 2px solid red;
-
-  //   @media (max-width: 768px) {
-  //     padding: 0px;
-  //   }
-  // `,
 };
 
 interface Props {}
@@ -65,6 +55,21 @@ interface PhotoProps {
   urls: { full: string };
   color: string;
   alt_description: string;
+  location: { title: string };
+  description: string;
+  related_collections: {
+    results: {
+      id: string;
+      title: string;
+      total_photos: number;
+      user: { name: string };
+      tags: { title: string }[];
+      preview_photos: {
+        id: string;
+        urls: { full: string };
+      }[];
+    }[];
+  };
 }
 
 const Modal: React.FC<Props> = () => {
@@ -84,7 +89,7 @@ const Modal: React.FC<Props> = () => {
   useEffect(() => {
     async function getUnsplashPhotoById() {
       const { data } = await unsplashApi.getPhotoById(location.state.photoId);
-      console.log(data);
+
       setPhoto(data);
     }
     getUnsplashPhotoById();
@@ -121,6 +126,8 @@ const Modal: React.FC<Props> = () => {
         {photo && (
           <PhotoMiddle imageURL={photo.urls.full} color={photo.color} alt_description={photo.alt_description} />
         )}
+        {photo && <PhotoFooter location={photo.location.title} description={photo.description} />}
+        {photo && <RelatedCollections collections={photo.related_collections.results} />}
       </S.ModalBox>
     </S.Modal>
   );
