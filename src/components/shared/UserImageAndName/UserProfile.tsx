@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Material-UI/Button';
 
@@ -113,7 +113,7 @@ const UserProfile: React.FC<Props> = ({
         </S.ProfileMiddle>
         <S.ProfileBottom>
           <S.Link target="_blank" href={portfolio_url}>
-            <Button />
+            <Button portfolio_url={portfolio_url} />
           </S.Link>
         </S.ProfileBottom>
       </S.Profile>

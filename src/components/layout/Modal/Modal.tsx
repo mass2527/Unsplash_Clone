@@ -1,6 +1,9 @@
-import React, { useCallback, useEffect, MouseEvent, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useCallback, useEffect, MouseEvent, useRef, useState, memo, useLayoutEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { unsplashApi } from '../../../axios/axios';
+import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
+import PhotoMiddle from './PhotoMiddle';
 
 const S = {
   Modal: styled.div<{ top: number }>`
@@ -25,7 +28,7 @@ const S = {
 
   ModalBox: styled.div`
     width: 100%;
-    height: 100%;
+
     background-color: white;
     border-radius: 3px;
     cursor: default;
@@ -34,14 +37,42 @@ const S = {
   `,
 
   PhotoHeader: styled.div``,
+
+  // PhotoMiddle: styled.div`
+  //   padding: 10px 16px;
+
+  //   display: grid;
+  //   place-items: center center;
+  //   border: 2px solid red;
+
+  //   @media (max-width: 768px) {
+  //     padding: 0px;
+  //   }
+  // `,
 };
 
 interface Props {}
 
+interface LocationProps {
+  photoId: string;
+}
+
+interface PhotoProps {
+  user: {
+    profile_image: { small: string };
+    name: string;
+  };
+  urls: { full: string };
+  color: string;
+  alt_description: string;
+}
+
 const Modal: React.FC<Props> = () => {
   const [scrollTop, setScrollTop] = useState(() => window.scrollY);
+  const [photo, setPhoto] = useState<PhotoProps>();
   const history = useHistory();
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const location = useLocation<LocationProps>();
 
   const handleResize = useCallback(
     (n: number) => {
@@ -51,6 +82,13 @@ const Modal: React.FC<Props> = () => {
   );
 
   useEffect(() => {
+    async function getUnsplashPhotoById() {
+      const { data } = await unsplashApi.getPhotoById(location.state.photoId);
+      console.log(data);
+      setPhoto(data);
+    }
+    getUnsplashPhotoById();
+
     document.body.style.overflowY = 'hidden';
 
     window.addEventListener('keydown', handleKeyDown);
@@ -75,10 +113,17 @@ const Modal: React.FC<Props> = () => {
   return (
     <S.Modal ref={modalRef} onClick={handleModalClick} top={scrollTop}>
       <S.ModalBox>
-        <S.PhotoHeader></S.PhotoHeader>
+        <S.PhotoHeader>
+          {photo && (
+            <UserImageAndName userImageURL={photo.user.profile_image.small} userName={photo.user.name} blackOption />
+          )}
+        </S.PhotoHeader>
+        {photo && (
+          <PhotoMiddle imageURL={photo.urls.full} color={photo.color} alt_description={photo.alt_description} />
+        )}
       </S.ModalBox>
     </S.Modal>
   );
 };
 
-export default Modal;
+export default memo(Modal);

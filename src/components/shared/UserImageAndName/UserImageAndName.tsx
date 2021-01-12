@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components';
 import UserProfile from './UserProfile';
 
@@ -20,14 +20,14 @@ const S = {
     cursor: pointer;
   `,
 
-  UserName: styled.span`
-    color: rgba(255, 255, 255, 0.8);
+  UserName: styled.span<{ isBlack: boolean | undefined }>`
+    color: ${({ isBlack }) => (isBlack ? '#111111' : 'rgba(255, 255, 255, 0.8)')};
     font-size: 15px;
     cursor: pointer;
     font-weight: 500;
 
     :hover {
-      color: white;
+      color: ${({ isBlack }) => (isBlack ? 'black' : 'white')};
     }
 
     @media (max-width: 768px) {
@@ -46,6 +46,7 @@ interface Props {
   accountName?: string;
   bio?: string;
   portfolio_url?: string;
+  blackOption?: boolean | undefined;
 }
 
 const UserImageAndName: React.FC<Props> = ({
@@ -55,6 +56,7 @@ const UserImageAndName: React.FC<Props> = ({
   profileOption,
   bio,
   portfolio_url,
+  blackOption,
 }) => {
   const [oepnProfile, setOpenProfile] = useState(false);
 
@@ -80,11 +82,15 @@ const UserImageAndName: React.FC<Props> = ({
         alt={userName}
       />
 
-      <S.UserName onMouseEnter={() => setOpenProfile(true)} onMouseLeave={() => setOpenProfile(false)}>
+      <S.UserName
+        isBlack={blackOption}
+        onMouseEnter={() => setOpenProfile(true)}
+        onMouseLeave={() => setOpenProfile(false)}
+      >
         {userName}
       </S.UserName>
     </S.UserImageAndName>
   );
 };
 
-export default UserImageAndName;
+export default memo(UserImageAndName);

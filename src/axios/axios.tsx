@@ -10,4 +10,5 @@ const instance = axios.create({
 
 export const unsplashApi = {
   getLatestPhotos: () => instance.get(''),
+  getPhotoById: (id: string) => instance.get(`${id}`),
 };
