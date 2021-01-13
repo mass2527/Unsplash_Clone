@@ -111,11 +111,13 @@ const UserProfile: React.FC<Props> = ({
         <S.ProfileMiddle>
           <S.Bio>{bio}</S.Bio>
         </S.ProfileMiddle>
-        <S.ProfileBottom>
-          <S.Link target="_blank" href={portfolio_url}>
-            <Button portfolio_url={portfolio_url} />
-          </S.Link>
-        </S.ProfileBottom>
+        {portfolio_url && (
+          <S.ProfileBottom>
+            <S.Link target="_blank" href={portfolio_url}>
+              <Button portfolio_url={portfolio_url} />
+            </S.Link>
+          </S.ProfileBottom>
+        )}
       </S.Profile>
     </S.UserProfile>
   );

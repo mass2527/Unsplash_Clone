@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { unsplashApi } from '../../../axios/axios';
+import { getLatestPhotosByPage, unsplashApi } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
@@ -26,35 +26,44 @@ interface Props {}
 const Main: React.FC<Props> = () => {
   const [photos, setPhotos] = useState([]);
   const divRef = useRef<HTMLDivElement | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const options = {
-    threshold: 0,
+    threshold: 1,
+    rootMargin: '100%',
   };
-
-  let callback = (entries: any, observer: any) => {
-    if (!photos) return;
-    entries.forEach((entry: any) => {
-      alert('work');
-    });
-  };
-
-  const observer = new IntersectionObserver(callback, options);
 
   useEffect(() => {
     async function getUnsplashLatestPhotos() {
       const { data } = await unsplashApi.getLatestPhotos();
-      console.log(data);
+
       setPhotos(data);
+      setCurrentPage(2);
     }
+
     getUnsplashLatestPhotos();
   }, []);
 
   useEffect(() => {
     if (!divRef.current) return;
+
+    const callback = (entries: any, observer: any) => {
+      entries.forEach(async (entry: any) => {
+        if (!entry.isIntersecting || currentPage === 1) return;
+
+        const { data } = await getLatestPhotosByPage(currentPage);
+        console.log('data>>>', data);
+        setPhotos((photos) => photos.concat(data));
+
+        setCurrentPage((crr) => crr + 1);
+      });
+    };
+
+    const observer = new IntersectionObserver(callback, options);
     observer.observe(divRef.current);
 
     return () => observer.disconnect();
-  }, [photos]);
+  }, [photos, currentPage]);
 
   return (
     <S.Main>
@@ -73,6 +82,7 @@ const Main: React.FC<Props> = () => {
                     bio,
                     portfolio_url,
                   },
+                  color,
                 }: {
                   id: string;
                   urls: { full: string };
@@ -83,12 +93,13 @@ const Main: React.FC<Props> = () => {
                     bio: string;
                     portfolio_url: string;
                   };
+                  color: string;
                 },
                 index,
                 array
               ) => (
                 <>
-                  <div>
+                  {index + 1 !== array.length ? (
                     <Photo
                       key={id}
                       imageURL={full}
@@ -98,9 +109,23 @@ const Main: React.FC<Props> = () => {
                       bio={bio}
                       portfolio_url={portfolio_url}
                       id={id}
+                      color={color}
                     />
-                  </div>
-                  {(index + 1) % array.length === 0 && <div ref={divRef}></div>}
+                  ) : (
+                    <div ref={divRef}>
+                      <Photo
+                        key={id}
+                        imageURL={full}
+                        userImageURL={large}
+                        userName={name}
+                        accountName={username}
+                        bio={bio}
+                        portfolio_url={portfolio_url}
+                        id={id}
+                        color={color}
+                      />
+                    </div>
+                  )}
                 </>
               )
             )}
