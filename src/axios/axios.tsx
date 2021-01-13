@@ -21,3 +21,12 @@ export const getLatestPhotosByPage = (page: number) => {
     },
   });
 };
+
+export const getUserPhotos = (userName: string | undefined) => {
+  return axios.get(`https://api.unsplash.com/users/${userName}/photos`, {
+    params: {
+      client_id: clientId,
+      per_page: 3,
+    },
+  });
+};

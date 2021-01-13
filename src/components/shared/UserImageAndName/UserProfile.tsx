@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getUserPhotos } from '../../../axios/axios';
 import Button from '../Material-UI/Button';
 
 const S = {
   UserProfile: styled.div<{ open: boolean }>`
     position: absolute;
     bottom: 40px;
-    width: 280px;
+    width: 350px;
     cursor: default;
     display: grid;
     place-items: end center;
@@ -16,7 +17,7 @@ const S = {
   `,
 
   Profile: styled.div<{ open: boolean }>`
-    width: 280px;
+    width: 350px;
     padding: 20px;
     box-sizing: border-box;
     background-color: white;
@@ -59,7 +60,9 @@ const S = {
 
   ProfileMiddle: styled.div`
     flex: 1;
+    margin-top: 10px;
     padding-bottom: 15px;
+    display: flex;
   `,
 
   ProfileBottom: styled.div`
@@ -74,6 +77,16 @@ const S = {
 
   Link: styled.a`
     all: unset;
+  `,
+
+  SquareImage: styled.img`
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+
+    :nth-child(2) {
+      margin: 0px 4px;
+    }
   `,
 };
 
@@ -98,6 +111,16 @@ const UserProfile: React.FC<Props> = ({
   bio,
   portfolio_url,
 }) => {
+  const [userPhotos, setUserPhotos] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await getUserPhotos(accountName);
+      setUserPhotos(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <S.UserProfile open={oepnProfile} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <S.Profile open={oepnProfile}>
@@ -109,7 +132,11 @@ const UserProfile: React.FC<Props> = ({
           </S.NameAndAccount>
         </S.ProfileTop>
         <S.ProfileMiddle>
-          <S.Bio>{bio}</S.Bio>
+          {userPhotos.map(({ id, urls: { small } }) => (
+            <>
+              <S.SquareImage key={id} src={small} alt={accountName} />
+            </>
+          ))}
         </S.ProfileMiddle>
         {portfolio_url && (
           <S.ProfileBottom>

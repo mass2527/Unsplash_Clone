@@ -73,7 +73,7 @@ interface PhotoProps {
       tags: { title: string }[];
       preview_photos: {
         id: string;
-        urls: { full: string };
+        urls: { small: string };
       }[];
     }[];
   };

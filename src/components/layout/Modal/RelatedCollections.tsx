@@ -38,7 +38,7 @@ interface Props {
     tags: { title: string }[];
     preview_photos: {
       id: string;
-      urls: { full: string };
+      urls: { small: string };
     }[];
   }[];
 }
@@ -50,7 +50,6 @@ const RelatedCollections: React.FC<Props> = ({ collections }) => {
         <S.Title>Rlated Collections</S.Title>
       </S.Header>
       <S.Main>
-        {/* {console.log(collections)} */}
         {collections.map(
           ({
             id,
@@ -67,7 +66,7 @@ const RelatedCollections: React.FC<Props> = ({ collections }) => {
             tags: { title: string }[];
             preview_photos: {
               id: string;
-              urls: { full: string };
+              urls: { small: string };
             }[];
           }) => (
             <Collection

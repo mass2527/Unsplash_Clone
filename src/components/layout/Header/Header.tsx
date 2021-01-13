@@ -7,7 +7,7 @@ const S = {
     background-color: #686de0;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,8 +29,13 @@ const S = {
   `,
 
   Form: styled.form`
-    height: 30px;
-    flex: 1;
+    display: none;
+
+    @media (max-width: 768px) {
+      height: 30px;
+      flex: 1;
+      display: block;
+    }
   `,
 
   Input: styled.input`
@@ -66,7 +71,7 @@ const Header: React.FC<Props> = () => {
       <S.HeaderMiddle>
         <S.Title>Unsplash</S.Title>
         <S.Form>
-          <S.Input type="text" placeholder="Search Photos" />
+          <S.Input type="text" placeholder="Search free high-resolution photos" />
         </S.Form>
       </S.HeaderMiddle>
     </S.Header>

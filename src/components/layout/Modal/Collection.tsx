@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const S = {
@@ -48,9 +48,10 @@ const S = {
     }
   `,
 
-  PhotoLeft: styled.div`
+  PhotoLeft: styled.div<{ isLoading: boolean }>`
     flex: 3;
     margin-right: 2px;
+    background-color: ${({ isLoading }) => isLoading && 'lightgray'};
   `,
 
   PhotoRight: styled.div`
@@ -59,8 +60,9 @@ const S = {
     flex-direction: column;
   `,
 
-  Photo: styled.div`
+  Photo: styled.div<{ isLoading: boolean }>`
     flex: 1;
+    background-color: ${({ isLoading }) => isLoading && 'lightgray'};
 
     :nth-child(1) {
       margin-bottom: 1px;
@@ -71,12 +73,13 @@ const S = {
     }
   `,
 
-  Image: styled.img`
+  Image: styled.img<{ isLoading: boolean }>`
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
     object-position: center center;
+    opacity: ${({ isLoading }) => (isLoading ? '0' : '1')};
   `,
 
   CollectionMiddle: styled.div`
@@ -132,21 +135,32 @@ interface Props {
   }[];
   previewPhotos: {
     id: string;
-    urls: { full: string };
+    urls: { small: string };
   }[];
 }
 
 const Collection: React.FC<Props> = ({ collectionName, numberOfPhotos, curator, tags, previewPhotos }) => {
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  function handleLoad() {
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    imageRef.current?.addEventListener('load', handleLoad);
+  }, []);
+
   return (
     <S.Collection>
       <S.Photos>
-        <S.PhotoLeft>
-          <S.Image src={previewPhotos[0].urls.full} />
+        <S.PhotoLeft isLoading={loading}>
+          <S.Image isLoading={loading} ref={imageRef} src={previewPhotos[0].urls.small} />
         </S.PhotoLeft>
         <S.PhotoRight>
-          {previewPhotos.slice(1, 3).map(({ id, urls: { full } }) => (
-            <S.Photo key={id}>
-              <S.Image src={full} />
+          {previewPhotos.slice(1, 3).map(({ id, urls: { small } }) => (
+            <S.Photo isLoading={loading} key={id}>
+              <S.Image isLoading={loading} src={small} />
             </S.Photo>
           ))}
         </S.PhotoRight>
@@ -160,7 +174,7 @@ const Collection: React.FC<Props> = ({ collectionName, numberOfPhotos, curator, 
       </S.CollectionMiddle>
       <S.CollectionFooter>
         {tags.slice(0, 3).map(({ title }: { title: string }) => (
-          <S.Tag>{title}</S.Tag>
+          <S.Tag key={title}>{title}</S.Tag>
         ))}
       </S.CollectionFooter>
     </S.Collection>

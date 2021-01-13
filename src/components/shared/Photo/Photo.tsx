@@ -96,6 +96,7 @@ const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName,
           portfolio_url={portfolio_url}
         />
       )}
+
       <S.Photo isLoading={loading} color={color} onClick={clickPhoto}>
         <S.Image isLoading={loading} ref={imageRef} className="Image" src={imageURL} />
         <S.Overlay isLoading={loading} ref={photoRef}>

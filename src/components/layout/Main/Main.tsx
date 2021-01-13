@@ -26,7 +26,7 @@ interface Props {}
 const Main: React.FC<Props> = () => {
   const [photos, setPhotos] = useState([]);
   const divRef = useRef<HTMLDivElement | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(2);
 
   const options = {
     threshold: 1,
@@ -38,7 +38,6 @@ const Main: React.FC<Props> = () => {
       const { data } = await unsplashApi.getLatestPhotos();
 
       setPhotos(data);
-      setCurrentPage(2);
     }
 
     getUnsplashLatestPhotos();
@@ -49,12 +48,11 @@ const Main: React.FC<Props> = () => {
 
     const callback = (entries: any, observer: any) => {
       entries.forEach(async (entry: any) => {
-        if (!entry.isIntersecting || currentPage === 1) return;
+        if (!entry.isIntersecting) return;
 
         const { data } = await getLatestPhotosByPage(currentPage);
         console.log('data>>>', data);
         setPhotos((photos) => photos.concat(data));
-
         setCurrentPage((crr) => crr + 1);
       });
     };
@@ -62,8 +60,10 @@ const Main: React.FC<Props> = () => {
     const observer = new IntersectionObserver(callback, options);
     observer.observe(divRef.current);
 
-    return () => observer.disconnect();
-  }, [photos, currentPage]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [photos]);
 
   return (
     <S.Main>
@@ -74,7 +74,7 @@ const Main: React.FC<Props> = () => {
               (
                 {
                   id,
-                  urls: { full },
+                  urls: { raw },
                   user: {
                     profile_image: { large },
                     name,
@@ -85,7 +85,7 @@ const Main: React.FC<Props> = () => {
                   color,
                 }: {
                   id: string;
-                  urls: { full: string };
+                  urls: { raw: string };
                   user: {
                     profile_image: { large: string };
                     name: string;
@@ -102,7 +102,7 @@ const Main: React.FC<Props> = () => {
                   {index + 1 !== array.length ? (
                     <Photo
                       key={id}
-                      imageURL={full}
+                      imageURL={raw}
                       userImageURL={large}
                       userName={name}
                       accountName={username}
@@ -115,7 +115,7 @@ const Main: React.FC<Props> = () => {
                     <div ref={divRef}>
                       <Photo
                         key={id}
-                        imageURL={full}
+                        imageURL={raw}
                         userImageURL={large}
                         userName={name}
                         accountName={username}
