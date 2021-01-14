@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getLatestPhotosByPage, unsplashApi } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
@@ -21,9 +21,9 @@ const S = {
   `,
 };
 
-interface Props {}
+const PhotoContext = createContext({});
 
-const Main: React.FC<Props> = () => {
+const Main: React.FC = () => {
   const [photos, setPhotos] = useState([]);
   const divRef = useRef<HTMLDivElement | null>(null);
   const [currentPage, setCurrentPage] = useState(2);
@@ -83,34 +83,25 @@ const Main: React.FC<Props> = () => {
                     portfolio_url,
                   },
                   color,
-                }: {
-                  id: string;
-                  urls: { raw: string };
-                  user: {
-                    profile_image: { large: string };
-                    name: string;
-                    username: string;
-                    bio: string;
-                    portfolio_url: string;
-                  };
-                  color: string;
                 },
                 index,
                 array
               ) => (
                 <>
                   {index + 1 !== array.length ? (
-                    <Photo
-                      key={id}
-                      imageURL={raw}
-                      userImageURL={large}
-                      userName={name}
-                      accountName={username}
-                      bio={bio}
-                      portfolio_url={portfolio_url}
-                      id={id}
-                      color={color}
-                    />
+                    <PhotoContext.Provider value="123">
+                      <Photo
+                        key={id}
+                        imageURL={raw}
+                        userImageURL={large}
+                        userName={name}
+                        accountName={username}
+                        bio={bio}
+                        portfolio_url={portfolio_url}
+                        id={id}
+                        color={color}
+                      />
+                    </PhotoContext.Provider>
                   ) : (
                     <div ref={divRef}>
                       <Photo

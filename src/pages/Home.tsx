@@ -9,14 +9,11 @@ import Banner from '../components/layout/Banner/Banner';
 const S = {
   Home: styled.div``,
 };
-
-interface Props {}
-
 interface LocationProps {
   photoId: string;
 }
 
-const Home: React.FC<Props> = () => {
+const Home: React.FC = () => {
   const location = useLocation<LocationProps>();
 
   return (

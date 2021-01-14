@@ -4,13 +4,12 @@ import styled from 'styled-components';
 const S = {
   Header: styled.div`
     height: 60px;
-    background-color: #686de0;
+    background-color: white;
     position: sticky;
     top: 0;
     z-index: 2;
     display: flex;
     justify-content: center;
-    align-items: center;
   `,
 
   HeaderMiddle: styled.div`
@@ -23,7 +22,7 @@ const S = {
   `,
 
   Title: styled.h2`
-    color: white;
+    color: black;
     cursor: pointer;
     margin-right: 15px;
   `,
@@ -45,8 +44,7 @@ const S = {
     width: 100%;
     height: 100%;
     background-color: transparent;
-    color: white;
-    cursor: pointer;
+    color: black;
     font-size: 15px;
     transition: border-color 0.1s ease-in-out;
     border-bottom: 2px solid transparent;
@@ -54,18 +52,16 @@ const S = {
 
     :focus {
       outline: none;
-      border-bottom: 2px solid white;
+      border-bottom: 2px solid black;
     }
 
     ::placeholder {
-      color: white;
+      color: black;
     }
   `,
 };
 
-interface Props {}
-
-const Header: React.FC<Props> = () => {
+const Header: React.FC = () => {
   return (
     <S.Header>
       <S.HeaderMiddle>

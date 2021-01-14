@@ -171,9 +171,7 @@ const S = {
   `,
 };
 
-interface Props {}
-
-const Banner: React.FC<Props> = () => {
+const Banner: React.FC = () => {
   return (
     <S.Banner>
       <S.BannerMain>

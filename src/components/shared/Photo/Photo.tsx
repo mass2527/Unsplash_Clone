@@ -72,7 +72,6 @@ const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName,
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      imageRef.current?.removeEventListener('load', handleLoad);
     };
   }, []);
 
