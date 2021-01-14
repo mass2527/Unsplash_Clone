@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getUserPhotos } from '../../../axios/axios';
+import { PhotoContext, PhotoContextProps } from '../../../Context/Context';
 import Button from '../Material-UI/Button';
 
 const S = {
@@ -94,24 +95,11 @@ interface Props {
   oepnProfile: boolean;
   handleMouseEnter: () => void;
   handleMouseLeave: () => void;
-  userImageURL: string;
-  userName: string;
-  accountName: string | undefined;
-  bio: string | undefined;
-  portfolio_url: string | undefined;
 }
 
-const UserProfile: React.FC<Props> = ({
-  oepnProfile,
-  handleMouseEnter,
-  handleMouseLeave,
-  userImageURL,
-  userName,
-  accountName,
-  bio,
-  portfolio_url,
-}) => {
+const UserProfile: React.FC<Props> = ({ oepnProfile, handleMouseEnter, handleMouseLeave }) => {
   const [userPhotos, setUserPhotos] = useState([]);
+  const { accountName, portfolio_url, userImageURL, userName } = useContext<PhotoContextProps>(PhotoContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -119,7 +107,7 @@ const UserProfile: React.FC<Props> = ({
       setUserPhotos(data);
     }
     fetchData();
-  }, []);
+  }, [accountName]);
 
   return (
     <S.UserProfile open={oepnProfile} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -131,13 +119,13 @@ const UserProfile: React.FC<Props> = ({
             <S.Account>@{accountName}</S.Account>
           </S.NameAndAccount>
         </S.ProfileTop>
+
         <S.ProfileMiddle>
-          {userPhotos.map(({ id, urls: { small } }) => (
-            <>
-              <S.SquareImage key={id} src={small} alt={accountName} />
-            </>
-          ))}
+          {/* {userPhotos.map(({ id, urls: { small } }) => (
+            <h1>{small}</h1>
+          ))} */}
         </S.ProfileMiddle>
+
         {portfolio_url && (
           <S.ProfileBottom>
             <S.Link target="_blank" href={portfolio_url}>

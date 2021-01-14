@@ -1,5 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import styled from 'styled-components';
+import { PhotoContext, PhotoContextProps } from '../../../Context/Context';
 import UserProfile from './UserProfile';
 
 const S = {
@@ -40,25 +41,13 @@ const S = {
 };
 
 interface Props {
-  userImageURL: string;
-  userName: string;
   profileOption?: boolean;
-  accountName?: string;
-  bio?: string;
-  portfolio_url?: string;
-  blackOption?: boolean | undefined;
+  blackOption?: boolean;
 }
 
-const UserImageAndName: React.FC<Props> = ({
-  userImageURL,
-  userName,
-  accountName,
-  profileOption,
-  bio,
-  portfolio_url,
-  blackOption,
-}) => {
+const UserImageAndName: React.FC<Props> = ({ profileOption, blackOption }) => {
   const [oepnProfile, setOpenProfile] = useState(false);
+  const { userImageURL, userName } = useContext<PhotoContextProps>(PhotoContext);
 
   return (
     <S.UserImageAndName>
@@ -67,11 +56,6 @@ const UserImageAndName: React.FC<Props> = ({
           handleMouseEnter={() => setOpenProfile(true)}
           handleMouseLeave={() => setOpenProfile(false)}
           oepnProfile={oepnProfile}
-          userImageURL={userImageURL}
-          userName={userName}
-          accountName={accountName}
-          bio={bio}
-          portfolio_url={portfolio_url}
         />
       )}
 

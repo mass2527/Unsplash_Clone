@@ -85,30 +85,12 @@ const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName,
 
   return (
     <>
-      {windowInnerWidth <= 768 && (
-        <UserImageAndName
-          userImageURL={userImageURL}
-          userName={userName}
-          accountName={accountName}
-          profileOption
-          bio={bio}
-          portfolio_url={portfolio_url}
-        />
-      )}
+      {windowInnerWidth <= 768 && <UserImageAndName profileOption />}
 
       <S.Photo isLoading={loading} color={color} onClick={clickPhoto}>
         <S.Image isLoading={loading} ref={imageRef} className="Image" src={imageURL} />
         <S.Overlay isLoading={loading} ref={photoRef}>
-          {windowInnerWidth > 768 && (
-            <UserImageAndName
-              userImageURL={userImageURL}
-              userName={userName}
-              accountName={accountName}
-              profileOption
-              bio={bio}
-              portfolio_url={portfolio_url}
-            />
-          )}
+          {windowInnerWidth > 768 && <UserImageAndName profileOption />}
         </S.Overlay>
       </S.Photo>
     </>

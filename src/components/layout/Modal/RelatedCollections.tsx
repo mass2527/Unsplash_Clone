@@ -49,36 +49,18 @@ const RelatedCollections: React.FC<Props> = ({ collections }) => {
       <S.Header>
         <S.Title>Rlated Collections</S.Title>
       </S.Header>
+
       <S.Main>
-        {collections.map(
-          ({
-            id,
-            title,
-            total_photos,
-            user: { name },
-            tags,
-            preview_photos,
-          }: {
-            id: string;
-            title: string;
-            total_photos: number;
-            user: { name: string };
-            tags: { title: string }[];
-            preview_photos: {
-              id: string;
-              urls: { small: string };
-            }[];
-          }) => (
-            <Collection
-              key={id}
-              collectionName={title}
-              numberOfPhotos={total_photos}
-              curator={name}
-              tags={tags}
-              previewPhotos={preview_photos}
-            />
-          )
-        )}
+        {collections.map(({ id, title, total_photos, user: { name }, tags, preview_photos }) => (
+          <Collection
+            key={id}
+            collectionName={title}
+            numberOfPhotos={total_photos}
+            curator={name}
+            tags={tags}
+            previewPhotos={preview_photos}
+          />
+        ))}
       </S.Main>
     </S.RelatedCollections>
   );

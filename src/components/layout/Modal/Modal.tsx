@@ -48,8 +48,6 @@ const S = {
   `,
 };
 
-interface Props {}
-
 interface LocationProps {
   photoId: string;
 }
@@ -79,7 +77,7 @@ interface PhotoProps {
   };
 }
 
-const Modal: React.FC<Props> = () => {
+const Modal: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(() => window.scrollY);
   const [photo, setPhoto] = useState<PhotoProps>();
   const history = useHistory();
@@ -125,11 +123,7 @@ const Modal: React.FC<Props> = () => {
   return (
     <S.Modal ref={modalRef} onClick={handleModalClick} top={scrollTop}>
       <S.ModalBox>
-        <S.PhotoHeader>
-          {photo && (
-            <UserImageAndName userImageURL={photo.user.profile_image.small} userName={photo.user.name} blackOption />
-          )}
-        </S.PhotoHeader>
+        <S.PhotoHeader>{photo && <UserImageAndName blackOption />}</S.PhotoHeader>
         {photo && (
           <PhotoMiddle imageURL={photo.urls.full} color={photo.color} alt_description={photo.alt_description} />
         )}

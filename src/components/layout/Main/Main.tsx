@@ -1,8 +1,9 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getLatestPhotosByPage, unsplashApi } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import { PhotoContext } from '../../../Context/Context';
 
 const S = {
   Main: styled.main`
@@ -20,8 +21,6 @@ const S = {
     }
   `,
 };
-
-const PhotoContext = createContext({});
 
 const Main: React.FC = () => {
   const [photos, setPhotos] = useState([]);
@@ -89,7 +88,15 @@ const Main: React.FC = () => {
               ) => (
                 <>
                   {index + 1 !== array.length ? (
-                    <PhotoContext.Provider value="123">
+                    <PhotoContext.Provider
+                      value={{
+                        userImageURL: raw,
+                        userName: name,
+                        accountName: username,
+                        bio: bio,
+                        portfolio_url: portfolio_url,
+                      }}
+                    >
                       <Photo
                         key={id}
                         imageURL={raw}
