@@ -30,3 +30,30 @@ export const getUserPhotos = (userName: string | undefined) => {
     },
   });
 };
+
+export const downloadImageFromURL = async (downloadURL: string, imageName: string, userName: string) => {
+  return axios
+    .get(downloadURL, {
+      responseType: 'blob',
+      params: {
+        client_id: clientId,
+      },
+    })
+    .then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('target', `_blank`);
+      link.setAttribute('download', `${userName} - ${imageName}-unsplash.jpg`);
+      document.body.appendChild(link);
+      link.click();
+    });
+};
+
+export const trackPhotoDownload = (id: string) => {
+  axios.get(`https://api.unsplash.com/photos/${id}/download`, {
+    params: {
+      client_id: clientId,
+    },
+  });
+};

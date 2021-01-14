@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, MouseEvent, useRef, useState, memo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { unsplashApi } from '../../../axios/axios';
+import { downloadImageFromURL, trackPhotoDownload, unsplashApi } from '../../../axios/axios';
+import DrowdownMenu from '../../shared/Material-UI/DropdownMenu';
 import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
 import PhotoFooter from './PhotoFooter';
 import PhotoMiddle from './PhotoMiddle';
 import RelatedCollections from './RelatedCollections';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const S = {
   Modal: styled.div<{ top: number }>`
@@ -31,6 +34,7 @@ const S = {
   ModalBox: styled.div`
     width: 100%;
     background-color: white;
+    min-height: 120%;
     border-radius: 3px;
     cursor: default;
     display: flex;
@@ -38,6 +42,9 @@ const S = {
   `,
 
   PhotoHeader: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: sticky;
     top: -40px;
     background-color: white;
@@ -46,6 +53,41 @@ const S = {
       top: 0px;
     }
   `,
+
+  Container: styled.div`
+    display: flex;
+    height: 176px;
+  `,
+
+  ContainerLeft: styled.div`
+    width: 120px;
+  `,
+
+  Image: styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  `,
+
+  ContainerRight: styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #111111;
+    padding: 15px;
+  `,
+
+  Title: styled.h4`
+    font-size: 18px;
+  `,
+
+  Greet: styled.p`
+    font-size: 15px;
+    text-align: center;
+  `,
 };
 
 interface LocationProps {
@@ -53,11 +95,12 @@ interface LocationProps {
 }
 
 interface PhotoProps {
+  id: string;
   user: {
     profile_image: { small: string };
     name: string;
   };
-  urls: { full: string };
+  urls: { full: string; regular: string; small: string; thumb: string };
   color: string;
   alt_description: string;
   location: { title: string };
@@ -71,7 +114,7 @@ interface PhotoProps {
       tags: { title: string }[];
       preview_photos: {
         id: string;
-        urls: { small: string };
+        urls: { small: string; regular: string };
       }[];
     }[];
   };
@@ -84,22 +127,16 @@ const Modal: React.FC = () => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation<LocationProps>();
 
-  const handleResize = useCallback(
-    (n: number) => {
-      setScrollTop(n);
-    },
-    [setScrollTop]
-  );
-
   useEffect(() => {
+    document.body.style.overflowY = 'hidden';
+    setScrollTop(window.scrollY);
+
     async function getUnsplashPhotoById() {
       const { data } = await unsplashApi.getPhotoById(location.state.photoId);
 
       setPhoto(data);
     }
     getUnsplashPhotoById();
-
-    document.body.style.overflowY = 'hidden';
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('resize', () => handleResize(window.scrollY));
@@ -108,7 +145,15 @@ const Modal: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflowY = 'scroll';
     };
-  }, []);
+    // eslint-disable-next-line
+  }, [location.state.photoId]);
+
+  const handleResize = useCallback(
+    (n: number) => {
+      setScrollTop(n);
+    },
+    [setScrollTop]
+  );
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key !== 'Escape') return;
@@ -120,15 +165,63 @@ const Modal: React.FC = () => {
     history.goBack();
   }
 
+  async function downloadImage(size: string) {
+    if (!photo) return;
+
+    let downloadURL;
+    if (size === 'full') {
+      downloadURL = photo.urls.full;
+    } else if (size === 'regular') {
+      downloadURL = photo.urls.regular;
+    } else {
+      downloadURL = photo.urls.small;
+    }
+
+    try {
+      await downloadImageFromURL(downloadURL, photo.alt_description, photo.user.name);
+      // toast(`Give a shotout to ${photo.user.name} 🙌`, {
+      //   toastId: photo.user.name,
+      // });
+      toast(
+        <S.Container>
+          <S.ContainerLeft>
+            <S.Image src={photo.urls.small} alt={photo.alt_description} />
+          </S.ContainerLeft>
+          <S.ContainerRight>
+            <S.Title>Say thanks 🙌</S.Title>
+            <S.Greet>Give a shoutout to {photo.user.name} </S.Greet>
+          </S.ContainerRight>
+        </S.Container>
+      );
+    } catch (error) {
+      alert(error);
+    } finally {
+      trackPhotoDownload(photo.id);
+    }
+  }
+
   return (
     <S.Modal ref={modalRef} onClick={handleModalClick} top={scrollTop}>
       <S.ModalBox>
-        <S.PhotoHeader>{photo && <UserImageAndName blackOption />}</S.PhotoHeader>
+        <S.PhotoHeader>
+          {photo && <UserImageAndName url={photo.user.profile_image.small} name={photo.user.name} blackOption />}
+          <DrowdownMenu downloadImage={downloadImage} />
+        </S.PhotoHeader>
         {photo && (
           <PhotoMiddle imageURL={photo.urls.full} color={photo.color} alt_description={photo.alt_description} />
         )}
         {photo && <PhotoFooter location={photo.location.title} description={photo.description} />}
         {photo && <RelatedCollections collections={photo.related_collections.results} />}
+        <ToastContainer
+          position="bottom-center"
+          autoClose={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          limit={1}
+        />
       </S.ModalBox>
     </S.Modal>
   );

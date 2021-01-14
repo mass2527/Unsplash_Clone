@@ -193,6 +193,7 @@ const Banner: React.FC = () => {
         <S.Photographer>Photo of the Day by Bradley Dunn</S.Photographer>
         <S.LogoWrapper>
           <a
+            rel="noopener noreferrer"
             target="_blank"
             href="https://www.squarespace.com/website-design?channel=directdisplay&subchannel=unsplashdirect&campaign=us_unsplashhomepageheader_1x1&subcampaign=na&source=national&utm_source=unsplash&utm_medium=directdisplay&utm_campaign=us_display&utm_term=na&utm_content=na"
           >

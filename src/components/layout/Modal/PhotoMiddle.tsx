@@ -27,6 +27,7 @@ const S = {
       width: 100%;
       max-height: none;
       height: auto;
+      cursor: default;
     }
   `,
 };
@@ -43,10 +44,12 @@ const PhotoMiddle: React.FC<Props> = ({ color, imageURL, alt_description }) => {
   const [zoomIn, setZoomIn] = useState(false);
 
   useEffect(() => {
-    imageRef.current?.addEventListener('load', handleLoad);
+    const currentImageRef = imageRef.current;
+    if (!currentImageRef) return;
+    currentImageRef.addEventListener('load', handleLoad);
 
     return () => {
-      imageRef.current?.removeEventListener('load', handleLoad);
+      currentImageRef.removeEventListener('load', handleLoad);
     };
   }, []);
 

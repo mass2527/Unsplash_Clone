@@ -135,32 +135,49 @@ interface Props {
   }[];
   previewPhotos: {
     id: string;
-    urls: { small: string };
+    urls: { small: string; regular: string };
   }[];
 }
 
 const Collection: React.FC<Props> = ({ collectionName, numberOfPhotos, curator, tags, previewPhotos }) => {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [loading, setLoading] = useState(true);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  function handleResize() {
+    setWidth(window.innerWidth);
+  }
 
   function handleLoad() {
     setLoading(false);
   }
 
   useEffect(() => {
-    imageRef.current?.addEventListener('load', handleLoad);
+    const currentImageRef = imageRef.current;
+    if (!currentImageRef) return;
+    window.addEventListener('resize', handleResize);
+    currentImageRef.addEventListener('load', handleLoad);
+
+    return () => {
+      currentImageRef.addEventListener('load', handleLoad);
+      window.addEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <S.Collection>
       <S.Photos>
         <S.PhotoLeft isLoading={loading}>
-          <S.Image isLoading={loading} ref={imageRef} src={previewPhotos[0].urls.small} />
+          <S.Image
+            isLoading={loading}
+            ref={imageRef}
+            src={width <= 768 ? previewPhotos[0].urls.regular : previewPhotos[0].urls.small}
+          />
         </S.PhotoLeft>
         <S.PhotoRight>
-          {previewPhotos.slice(1, 3).map(({ id, urls: { small } }) => (
+          {previewPhotos.slice(1, 3).map(({ id, urls: { small, regular } }) => (
             <S.Photo isLoading={loading} key={id}>
-              <S.Image isLoading={loading} src={small} />
+              <S.Image isLoading={loading} src={width <= 768 ? regular : small} />
             </S.Photo>
           ))}
         </S.PhotoRight>

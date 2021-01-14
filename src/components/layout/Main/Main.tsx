@@ -62,10 +62,12 @@ const Main: React.FC = () => {
     return () => {
       observer.disconnect();
     };
+    // eslint-disable-next-line
   }, [photos]);
 
   return (
     <S.Main>
+      {console.log(photos)}
       <S.MainCenter>
         <ResponsiveMasonry columnsCountBreakPoints={{ 0: 1, 768: 2, 992: 3 }}>
           <Masonry gutter="24px">
@@ -86,29 +88,27 @@ const Main: React.FC = () => {
                 index,
                 array
               ) => (
-                <>
+                <PhotoContext.Provider
+                  value={{
+                    userImageURL: large,
+                    userName: name,
+                    accountName: username,
+                    bio: bio,
+                    portfolio_url: portfolio_url,
+                  }}
+                >
                   {index + 1 !== array.length ? (
-                    <PhotoContext.Provider
-                      value={{
-                        userImageURL: raw,
-                        userName: name,
-                        accountName: username,
-                        bio: bio,
-                        portfolio_url: portfolio_url,
-                      }}
-                    >
-                      <Photo
-                        key={id}
-                        imageURL={raw}
-                        userImageURL={large}
-                        userName={name}
-                        accountName={username}
-                        bio={bio}
-                        portfolio_url={portfolio_url}
-                        id={id}
-                        color={color}
-                      />
-                    </PhotoContext.Provider>
+                    <Photo
+                      key={id}
+                      imageURL={raw}
+                      userImageURL={large}
+                      userName={name}
+                      accountName={username}
+                      bio={bio}
+                      portfolio_url={portfolio_url}
+                      id={id}
+                      color={color}
+                    />
                   ) : (
                     <div ref={divRef}>
                       <Photo
@@ -124,7 +124,7 @@ const Main: React.FC = () => {
                       />
                     </div>
                   )}
-                </>
+                </PhotoContext.Provider>
               )
             )}
           </Masonry>

@@ -38,7 +38,7 @@ interface Props {
     tags: { title: string }[];
     preview_photos: {
       id: string;
-      urls: { small: string };
+      urls: { small: string; regular: string };
     }[];
   }[];
 }

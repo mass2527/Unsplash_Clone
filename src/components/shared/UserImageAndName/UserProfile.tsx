@@ -121,14 +121,14 @@ const UserProfile: React.FC<Props> = ({ oepnProfile, handleMouseEnter, handleMou
         </S.ProfileTop>
 
         <S.ProfileMiddle>
-          {/* {userPhotos.map(({ id, urls: { small } }) => (
-            <h1>{small}</h1>
-          ))} */}
+          {userPhotos.map(({ id, urls: { small } }) => (
+            <S.SquareImage key={id} src={small} />
+          ))}
         </S.ProfileMiddle>
 
         {portfolio_url && (
           <S.ProfileBottom>
-            <S.Link target="_blank" href={portfolio_url}>
+            <S.Link target="_blank" rel="noopener noreferrer" href={portfolio_url}>
               <Button portfolio_url={portfolio_url} />
             </S.Link>
           </S.ProfileBottom>

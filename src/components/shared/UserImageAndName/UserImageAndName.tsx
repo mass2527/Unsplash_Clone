@@ -43,9 +43,11 @@ const S = {
 interface Props {
   profileOption?: boolean;
   blackOption?: boolean;
+  url?: string;
+  name?: string;
 }
 
-const UserImageAndName: React.FC<Props> = ({ profileOption, blackOption }) => {
+const UserImageAndName: React.FC<Props> = ({ profileOption, blackOption, url, name }) => {
   const [oepnProfile, setOpenProfile] = useState(false);
   const { userImageURL, userName } = useContext<PhotoContextProps>(PhotoContext);
 
@@ -62,8 +64,8 @@ const UserImageAndName: React.FC<Props> = ({ profileOption, blackOption }) => {
       <S.UserImage
         onMouseEnter={() => setOpenProfile(true)}
         onMouseLeave={() => setOpenProfile(false)}
-        src={userImageURL}
-        alt={userName}
+        src={userImageURL || url}
+        alt={userName || name}
       />
 
       <S.UserName
@@ -71,7 +73,7 @@ const UserImageAndName: React.FC<Props> = ({ profileOption, blackOption }) => {
         onMouseEnter={() => setOpenProfile(true)}
         onMouseLeave={() => setOpenProfile(false)}
       >
-        {userName}
+        {userName || name}
       </S.UserName>
     </S.UserImageAndName>
   );
