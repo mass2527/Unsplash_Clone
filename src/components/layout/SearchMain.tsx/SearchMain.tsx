@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { getLatestPhotosByPage, unsplashApi } from '../../../axios/axios';
+import { getPhotoBySearchTerm } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { PhotoContext } from '../../../Context/Context';
+import { useLocation } from 'react-router-dom';
 
 const S = {
-  Main: styled.main`
+  SearchMain: styled.main`
     padding: 30px 0px;
   `,
 
-  MainCenter: styled.div`
+  SearchMainCenter: styled.div`
     max-width: 1320px;
     padding: 0px 12px;
     box-sizing: border-box;
@@ -20,12 +21,23 @@ const S = {
       padding: 0px;
     }
   `,
+
+  Title: styled.h1`
+    font-size: 46px;
+    color: #111111;
+    margin-bottom: 16px;
+  `,
 };
 
-const Main: React.FC = () => {
+interface LocationProps {
+  searchTerm: string;
+}
+
+const SearchMain: React.FC = () => {
   const [photos, setPhotos] = useState([]);
   const divRef = useRef<HTMLDivElement | null>(null);
   const currentPage = useRef(1);
+  const location = useLocation<LocationProps>();
 
   const options = {
     threshold: 0,
@@ -33,15 +45,22 @@ const Main: React.FC = () => {
   };
 
   useEffect(() => {
-    async function getUnsplashLatestPhotos() {
-      const { data } = await unsplashApi.getLatestPhotos();
+    setPhotos([]);
 
-      setPhotos(data);
+    async function fetchData() {
+      try {
+        const {
+          data: { results },
+        } = await getPhotoBySearchTerm(location.state.searchTerm, 1);
+
+        setPhotos(results);
+      } catch (error) {}
     }
 
-    getUnsplashLatestPhotos();
-    currentPage.current++;
-  }, []);
+    fetchData();
+    currentPage.current = 2;
+    // eslint-disable-next-line
+  }, [location.state.searchTerm]);
 
   useEffect(() => {
     if (!divRef.current) return;
@@ -50,9 +69,11 @@ const Main: React.FC = () => {
       entries.forEach(async (entry: any) => {
         if (!entry.isIntersecting) return;
 
-        const { data } = await getLatestPhotosByPage(currentPage.current);
+        const {
+          data: { results },
+        } = await getPhotoBySearchTerm(location.state.searchTerm, currentPage.current);
 
-        setPhotos((photos) => photos.concat(data));
+        setPhotos((photos) => photos.concat(results));
         currentPage.current++;
       });
     };
@@ -67,8 +88,9 @@ const Main: React.FC = () => {
   }, [photos]);
 
   return (
-    <S.Main>
-      <S.MainCenter>
+    <S.SearchMain>
+      <S.SearchMainCenter>
+        <S.Title>{location.state.searchTerm}</S.Title>
         <ResponsiveMasonry columnsCountBreakPoints={{ 0: 1, 768: 2, 992: 3 }}>
           <Masonry gutter="24px">
             {photos.map(
@@ -129,9 +151,9 @@ const Main: React.FC = () => {
             )}
           </Masonry>
         </ResponsiveMasonry>
-      </S.MainCenter>
-    </S.Main>
+      </S.SearchMainCenter>
+    </S.SearchMain>
   );
 };
 
-export default Main;
+export default SearchMain;

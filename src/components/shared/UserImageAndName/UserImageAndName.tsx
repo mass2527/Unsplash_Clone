@@ -9,6 +9,10 @@ const S = {
     display: flex;
     align-items: center;
     position: relative;
+
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
   `,
 
   UserImage: styled.img`

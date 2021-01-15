@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const S = {
@@ -28,13 +29,9 @@ const S = {
   `,
 
   Form: styled.form`
-    display: none;
-
-    @media (max-width: 768px) {
-      height: 30px;
-      flex: 1;
-      display: block;
-    }
+    height: 30px;
+    flex: 1;
+    display: block;
   `,
 
   Input: styled.input`
@@ -62,12 +59,30 @@ const S = {
 };
 
 const Header: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const history = useHistory();
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    history.push(`/s/photos/${searchTerm.replaceAll(' ', '-')}`, {
+      searchTerm,
+    });
+
+    setSearchTerm('');
+  }
+
   return (
     <S.Header>
       <S.HeaderMiddle>
-        <S.Title>Unsplash</S.Title>
-        <S.Form>
-          <S.Input type="text" placeholder="Search free high-resolution photos" />
+        <S.Title onClick={() => history.push('/')}>DH KIM</S.Title>
+        <S.Form onSubmit={handleSubmit}>
+          <S.Input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.currentTarget.value)}
+            type="text"
+            placeholder="Search free high-resolution photos"
+          />
         </S.Form>
       </S.HeaderMiddle>
     </S.Header>

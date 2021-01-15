@@ -1,4 +1,5 @@
 import React, { FormEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const S = {
@@ -169,14 +170,17 @@ const S = {
 };
 
 const Banner: React.FC = () => {
-  const [word, setWord] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const history = useHistory();
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log(word);
+    history.push(`/s/photos/${searchTerm.replaceAll(' ', '-')}`, {
+      searchTerm,
+    });
 
-    setWord('');
+    setSearchTerm('');
   }
 
   return (
@@ -192,8 +196,8 @@ const Banner: React.FC = () => {
             </S.Description>
             <S.Form onSubmit={handleSubmit}>
               <S.Input
-                value={word}
-                onChange={(e) => setWord(e.currentTarget.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.currentTarget.value)}
                 type="text"
                 placeholder="Search free high-resolution photos"
               />

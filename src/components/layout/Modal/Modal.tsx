@@ -7,8 +7,11 @@ import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
 import PhotoFooter from './PhotoFooter';
 import PhotoMiddle from './PhotoMiddle';
 import RelatedCollections from './RelatedCollections';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import { PhotoContext } from '../../../Context/Context';
+import Photo from '../../shared/Photo/Photo';
 
 const S = {
   Modal: styled.div<{ top: number }>`
@@ -19,6 +22,7 @@ const S = {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     overflow-y: scroll;
+    overflow-x: hidden;
     box-sizing: border-box;
     padding: 40px 120px;
     cursor: zoom-out;
@@ -48,6 +52,7 @@ const S = {
     position: sticky;
     top: -40px;
     background-color: white;
+    z-index: 1;
 
     @media (max-width: 768px) {
       top: 0px;
@@ -88,6 +93,20 @@ const S = {
     font-size: 15px;
     text-align: center;
   `,
+
+  RelatedPhotos: styled.div`
+    padding: 0px 12px;
+  `,
+
+  RelatedPhotoTitle: styled.h4`
+    padding-top: 60px;
+    padding-bottom: 16px;
+    font-weight: 500;
+    color: #111111;
+    font-size: 18px;
+  `,
+
+  RelatedPhotoMain: styled.div``,
 };
 
 interface LocationProps {
@@ -123,18 +142,27 @@ interface PhotoProps {
 const Modal: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(() => window.scrollY);
   const [photo, setPhoto] = useState<PhotoProps>();
+  const [relatedPhotos, setRelatedPhotos] = useState([]);
+  const [width, setWidth] = useState(window.innerWidth);
   const history = useHistory();
   const modalRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation<LocationProps>();
 
   useEffect(() => {
+    setRelatedPhotos([]);
+
     document.body.style.overflowY = 'hidden';
+
     setScrollTop(window.scrollY);
 
     async function getUnsplashPhotoById() {
       const { data } = await unsplashApi.getPhotoById(location.state.photoId);
-
+      const {
+        data: { results },
+      } = await unsplashApi.getRelatedPhotosById(location.state.photoId);
+      console.log('realtedPhotos>>>', results);
       setPhoto(data);
+      setRelatedPhotos(results);
     }
     getUnsplashPhotoById();
 
@@ -148,12 +176,10 @@ const Modal: React.FC = () => {
     // eslint-disable-next-line
   }, [location.state.photoId]);
 
-  const handleResize = useCallback(
-    (n: number) => {
-      setScrollTop(n);
-    },
-    [setScrollTop]
-  );
+  function handleResize(n: number) {
+    setScrollTop(n);
+    setWidth(window.innerWidth);
+  }
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key !== 'Escape') return;
@@ -169,6 +195,7 @@ const Modal: React.FC = () => {
     if (!photo) return;
 
     let downloadURL;
+
     if (size === 'full') {
       downloadURL = photo.urls.full;
     } else if (size === 'regular') {
@@ -210,7 +237,61 @@ const Modal: React.FC = () => {
           <PhotoMiddle imageURL={photo.urls.full} color={photo.color} alt_description={photo.alt_description} />
         )}
         {photo && <PhotoFooter location={photo.location.title} description={photo.description} />}
+
+        {/*  */}
+
+        <S.RelatedPhotos>
+          <S.RelatedPhotoTitle>Rleated photos</S.RelatedPhotoTitle>
+          <S.RelatedPhotoMain>
+            <ResponsiveMasonry columnsCountBreakPoints={{ 0: 2, 1157: 3 }}>
+              <Masonry gutter={width <= 768 ? '12px' : '24px'}>
+                {relatedPhotos
+                  .slice(0, 18)
+                  .map(
+                    ({
+                      id,
+                      urls: { raw },
+                      user: {
+                        profile_image: { large },
+                        name,
+                        username,
+                        bio,
+                        portfolio_url,
+                      },
+                      color,
+                    }) => (
+                      <PhotoContext.Provider
+                        value={{
+                          userImageURL: large,
+                          userName: name,
+                          accountName: username,
+                          bio: bio,
+                          portfolio_url: portfolio_url,
+                        }}
+                      >
+                        <Photo
+                          key={id}
+                          imageURL={raw}
+                          userImageURL={large}
+                          userName={name}
+                          accountName={username}
+                          bio={bio}
+                          portfolio_url={portfolio_url}
+                          id={id}
+                          color={color}
+                        />
+                      </PhotoContext.Provider>
+                    )
+                  )}
+              </Masonry>
+            </ResponsiveMasonry>
+          </S.RelatedPhotoMain>
+        </S.RelatedPhotos>
+
+        {/*  */}
+
         {photo && <RelatedCollections collections={photo.related_collections.results} />}
+
         <ToastContainer
           position="bottom-center"
           autoClose={false}
@@ -220,6 +301,7 @@ const Modal: React.FC = () => {
           pauseOnFocusLoss
           draggable
           limit={1}
+          transition={Zoom}
         />
       </S.ModalBox>
     </S.Modal>

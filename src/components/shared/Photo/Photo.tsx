@@ -1,5 +1,5 @@
 import React, { useEffect, useState, MouseEvent, useRef, memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UserImageAndName from '../UserImageAndName/UserImageAndName';
 
@@ -51,12 +51,17 @@ interface Props {
   color: string;
 }
 
+interface locationProps {
+  searchTerm: string;
+}
+
 const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName, bio, portfolio_url, id, color }) => {
   const [windowInnerWidth, setWindowInnerWidth] = useState(window.innerWidth);
   const photoRef = useRef<HTMLDivElement | null>(null);
   const history = useHistory();
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation<locationProps>();
 
   function handleResize() {
     setWindowInnerWidth(window.innerWidth);
@@ -80,6 +85,7 @@ const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName,
 
     history.push(`/photos/${id}`, {
       photoId: id,
+      searchTerm: location.state?.searchTerm,
     });
   }
 

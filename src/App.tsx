@@ -1,15 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
+import Search from './pages/Search';
+
+interface LocationProps {
+  searchTerm: string;
+}
 
 function App() {
+  const location = useLocation<LocationProps>();
+
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/photos/:photoId" component={Home} />
-        <Route path="/" component={Home} />
-      </Switch>
-    </Router>
+    <Switch>
+      <Route exact path="/photos/:photoId" component={location.state?.searchTerm ? Search : Home} />
+      <Route exact path="/s/photos/:searchTerm" component={Search} />
+      <Route path="/" component={Home} />
+    </Switch>
   );
 }
 

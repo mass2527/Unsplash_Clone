@@ -11,6 +11,7 @@ const instance = axios.create({
 export const unsplashApi = {
   getLatestPhotos: () => instance.get(''),
   getPhotoById: (id: string) => instance.get(`${id}`),
+  getRelatedPhotosById: (id: string) => instance.get(`${id}/related`),
 };
 
 export const getLatestPhotosByPage = (page: number) => {
@@ -51,9 +52,19 @@ export const downloadImageFromURL = async (downloadURL: string, imageName: strin
 };
 
 export const trackPhotoDownload = (id: string) => {
-  axios.get(`https://api.unsplash.com/photos/${id}/download`, {
+  return axios.get(`https://api.unsplash.com/photos/${id}/download`, {
     params: {
       client_id: clientId,
+    },
+  });
+};
+
+export const getPhotoBySearchTerm = (searchTerm: string, page: number) => {
+  return axios.get('https://api.unsplash.com/search/photos', {
+    params: {
+      client_id: clientId,
+      query: searchTerm,
+      page,
     },
   });
 };
