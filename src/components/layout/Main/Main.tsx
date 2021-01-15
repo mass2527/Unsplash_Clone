@@ -25,21 +25,22 @@ const S = {
 const Main: React.FC = () => {
   const [photos, setPhotos] = useState([]);
   const divRef = useRef<HTMLDivElement | null>(null);
-  const [currentPage, setCurrentPage] = useState(2);
+  const currentPage = useRef(1);
 
   const options = {
-    threshold: 1,
-    rootMargin: '100%',
+    threshold: 0,
+    rootMargin: '700px',
   };
 
   useEffect(() => {
     async function getUnsplashLatestPhotos() {
       const { data } = await unsplashApi.getLatestPhotos();
-
+      // console.log('initial data>>>', data);
       setPhotos(data);
     }
 
     getUnsplashLatestPhotos();
+    currentPage.current++;
   }, []);
 
   useEffect(() => {
@@ -49,10 +50,10 @@ const Main: React.FC = () => {
       entries.forEach(async (entry: any) => {
         if (!entry.isIntersecting) return;
 
-        const { data } = await getLatestPhotosByPage(currentPage);
-        console.log('data>>>', data);
+        const { data } = await getLatestPhotosByPage(currentPage.current);
+        // console.log(`${currentPage.current}data>>>`, data);
         setPhotos((photos) => photos.concat(data));
-        setCurrentPage((crr) => crr + 1);
+        currentPage.current++;
       });
     };
 
@@ -67,7 +68,6 @@ const Main: React.FC = () => {
 
   return (
     <S.Main>
-      {console.log(photos)}
       <S.MainCenter>
         <ResponsiveMasonry columnsCountBreakPoints={{ 0: 1, 768: 2, 992: 3 }}>
           <Masonry gutter="24px">

@@ -179,9 +179,7 @@ const Modal: React.FC = () => {
 
     try {
       await downloadImageFromURL(downloadURL, photo.alt_description, photo.user.name);
-      // toast(`Give a shotout to ${photo.user.name} 🙌`, {
-      //   toastId: photo.user.name,
-      // });
+
       toast(
         <S.Container>
           <S.ContainerLeft>
@@ -196,6 +194,7 @@ const Modal: React.FC = () => {
     } catch (error) {
       alert(error);
     } finally {
+      // Unsplash recommends API user to send request for increasing number of downloads of the picture
       trackPhotoDownload(photo.id);
     }
   }

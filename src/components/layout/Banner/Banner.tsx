@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
 
 const S = {
@@ -9,13 +9,10 @@ const S = {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    background-image: url('https://images.unsplash.com/photo-1609910276422-d1892a5c6463?ixid=MXwxMjA3fDB8MHxwaG90by1vZi10aGUtZGF5fHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&dpr=1&auto=format%2Ccompress&fit=crop&w=399&h=230');
 
     @media (max-width: 768px) {
       height: 310px;
-    }
-
-    @media (min-width: 400px) {
-      background-image: url('https://images.unsplash.com/photo-1609910276422-d1892a5c6463?ixid=MXwxMjA3fDB8MHxwaG90by1vZi10aGUtZGF5fHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&dpr=1&auto=format%2Ccompress&fit=crop&w=399&h=230');
     }
 
     @media (min-width: 600px) {
@@ -172,6 +169,16 @@ const S = {
 };
 
 const Banner: React.FC = () => {
+  const [word, setWord] = useState('');
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    console.log(word);
+
+    setWord('');
+  }
+
   return (
     <S.Banner>
       <S.BannerMain>
@@ -183,8 +190,13 @@ const Banner: React.FC = () => {
               <br />
               Powered by creators everywhere.
             </S.Description>
-            <S.Form>
-              <S.Input type="text" placeholder="Search free high-resolution photos" />
+            <S.Form onSubmit={handleSubmit}>
+              <S.Input
+                value={word}
+                onChange={(e) => setWord(e.currentTarget.value)}
+                type="text"
+                placeholder="Search free high-resolution photos"
+              />
             </S.Form>
           </S.Content>
         </S.ContentWrapper>
