@@ -37,6 +37,11 @@ const S = {
     margin-bottom: 10px;
     max-height: 300px;
     height: 20vw;
+    cursor: pointer;
+
+    :hover {
+      opacity: 0.8;
+    }
 
     @media (max-width: 990px) {
       height: 28vw;

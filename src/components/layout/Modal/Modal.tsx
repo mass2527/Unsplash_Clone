@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, MouseEvent, useRef, useState, memo } from 'react';
+import React, { useEffect, MouseEvent, useRef, useState, memo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { downloadImageFromURL, trackPhotoDownload, unsplashApi } from '../../../axios/axios';
@@ -111,6 +111,7 @@ const S = {
 
 interface LocationProps {
   photoId: string;
+  searchTerm: string;
 }
 
 interface PhotoProps {
@@ -149,8 +150,6 @@ const Modal: React.FC = () => {
   const location = useLocation<LocationProps>();
 
   useEffect(() => {
-    setRelatedPhotos([]);
-
     document.body.style.overflowY = 'hidden';
 
     setScrollTop(window.scrollY);
@@ -183,12 +182,22 @@ const Modal: React.FC = () => {
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key !== 'Escape') return;
-    history.goBack();
+    if (!location.state?.searchTerm) {
+      history.push('/');
+    } else {
+      // history.push(`/s/photos/${location.state.searchTerm.replaceAll(' ', '-')}`);
+      history.goBack();
+    }
   }
 
   function handleModalClick(e: MouseEvent<HTMLDivElement>) {
     if (e.target !== modalRef.current) return;
-    history.goBack();
+    if (!location.state?.searchTerm) {
+      history.push('/');
+    } else {
+      // history.push(`/s/photos/${location.state.searchTerm.replaceAll(' ', '-')}`);
+      history.goBack();
+    }
   }
 
   async function downloadImage(size: string) {
@@ -230,65 +239,68 @@ const Modal: React.FC = () => {
     <S.Modal ref={modalRef} onClick={handleModalClick} top={scrollTop}>
       <S.ModalBox>
         <S.PhotoHeader>
-          {photo && <UserImageAndName url={photo.user.profile_image.small} name={photo.user.name} blackOption />}
-          <DrowdownMenu downloadImage={downloadImage} />
+          {photo && (
+            <>
+              <UserImageAndName url={photo.user.profile_image.small} name={photo.user.name} blackOption />
+              <DrowdownMenu downloadImage={downloadImage} />
+            </>
+          )}
         </S.PhotoHeader>
         {photo && (
           <PhotoMiddle imageURL={photo.urls.full} color={photo.color} alt_description={photo.alt_description} />
         )}
         {photo && <PhotoFooter location={photo.location.title} description={photo.description} />}
 
-        {/*  */}
-
-        <S.RelatedPhotos>
-          <S.RelatedPhotoTitle>Rleated photos</S.RelatedPhotoTitle>
-          <S.RelatedPhotoMain>
-            <ResponsiveMasonry columnsCountBreakPoints={{ 0: 2, 1157: 3 }}>
-              <Masonry gutter={width <= 768 ? '12px' : '24px'}>
-                {relatedPhotos
-                  .slice(0, 18)
-                  .map(
-                    ({
-                      id,
-                      urls: { raw },
-                      user: {
-                        profile_image: { large },
-                        name,
-                        username,
-                        bio,
-                        portfolio_url,
-                      },
-                      color,
-                    }) => (
-                      <PhotoContext.Provider
-                        value={{
-                          userImageURL: large,
-                          userName: name,
-                          accountName: username,
-                          bio: bio,
-                          portfolio_url: portfolio_url,
-                        }}
-                      >
-                        <Photo
-                          key={id}
-                          imageURL={raw}
-                          userImageURL={large}
-                          userName={name}
-                          accountName={username}
-                          bio={bio}
-                          portfolio_url={portfolio_url}
-                          id={id}
-                          color={color}
-                        />
-                      </PhotoContext.Provider>
-                    )
-                  )}
-              </Masonry>
-            </ResponsiveMasonry>
-          </S.RelatedPhotoMain>
-        </S.RelatedPhotos>
-
-        {/*  */}
+        {relatedPhotos.length !== 0 && (
+          <S.RelatedPhotos>
+            <S.RelatedPhotoTitle>Rleated photos</S.RelatedPhotoTitle>
+            <S.RelatedPhotoMain>
+              <ResponsiveMasonry columnsCountBreakPoints={{ 0: 2, 1157: 3 }}>
+                <Masonry gutter={width <= 768 ? '12px' : '24px'}>
+                  {relatedPhotos
+                    .slice(0, 18)
+                    .map(
+                      ({
+                        id,
+                        urls: { raw },
+                        user: {
+                          profile_image: { large },
+                          name,
+                          username,
+                          bio,
+                          portfolio_url,
+                        },
+                        color,
+                      }) => (
+                        <PhotoContext.Provider
+                          value={{
+                            userImageURL: large,
+                            userName: name,
+                            accountName: username,
+                            bio: bio,
+                            portfolio_url: portfolio_url,
+                          }}
+                        >
+                          <Photo
+                            key={id}
+                            imageURL={raw}
+                            userImageURL={large}
+                            userName={name}
+                            accountName={username}
+                            bio={bio}
+                            portfolio_url={portfolio_url}
+                            id={id}
+                            color={color}
+                            noHeaderOption
+                          />
+                        </PhotoContext.Provider>
+                      )
+                    )}
+                </Masonry>
+              </ResponsiveMasonry>
+            </S.RelatedPhotoMain>
+          </S.RelatedPhotos>
+        )}
 
         {photo && <RelatedCollections collections={photo.related_collections.results} />}
 

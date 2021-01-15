@@ -60,7 +60,7 @@ const SearchMain: React.FC = () => {
     fetchData();
     currentPage.current = 2;
     // eslint-disable-next-line
-  }, [location.state.searchTerm]);
+  }, [location.state?.searchTerm]);
 
   useEffect(() => {
     if (!divRef.current) return;
@@ -90,7 +90,7 @@ const SearchMain: React.FC = () => {
   return (
     <S.SearchMain>
       <S.SearchMainCenter>
-        <S.Title>{location.state.searchTerm}</S.Title>
+        <S.Title>{location.state?.searchTerm[0].toUpperCase() + location.state?.searchTerm.slice(1)}</S.Title>
         <ResponsiveMasonry columnsCountBreakPoints={{ 0: 1, 768: 2, 992: 3 }}>
           <Masonry gutter="24px">
             {photos.map(

@@ -17,7 +17,7 @@ const S = {
     opacity: ${({ isLoading }) => (isLoading ? '0' : '1')};
   `,
 
-  Overlay: styled.div<{ isLoading: boolean }>`
+  Overlay: styled.div<{ isLoading: boolean; noHeaderOption: boolean | undefined }>`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -34,7 +34,7 @@ const S = {
 
     @media (max-width: 768px) {
       :hover {
-        opacity: 0;
+        opacity: ${({ noHeaderOption }) => (noHeaderOption ? '1' : '0')};
       }
     }
   `,
@@ -49,18 +49,19 @@ interface Props {
   portfolio_url?: string;
   id: string;
   color: string;
+  noHeaderOption?: boolean;
 }
 
 interface locationProps {
   searchTerm: string;
 }
 
-const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName, bio, portfolio_url, id, color }) => {
+const Photo: React.FC<Props> = ({ imageURL, id, color, noHeaderOption }) => {
   const [windowInnerWidth, setWindowInnerWidth] = useState(window.innerWidth);
-  const photoRef = useRef<HTMLDivElement | null>(null);
-  const history = useHistory();
-  const imageRef = useRef<HTMLImageElement | null>(null);
   const [loading, setLoading] = useState(true);
+  const photoRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const history = useHistory();
   const location = useLocation<locationProps>();
 
   function handleResize() {
@@ -91,12 +92,13 @@ const Photo: React.FC<Props> = ({ imageURL, userImageURL, userName, accountName,
 
   return (
     <>
-      {windowInnerWidth <= 768 && <UserImageAndName profileOption />}
+      {windowInnerWidth <= 768 && !noHeaderOption && <UserImageAndName profileOption />}
 
       <S.Photo isLoading={loading} color={color} onClick={clickPhoto}>
         <S.Image isLoading={loading} ref={imageRef} className="Image" src={imageURL} />
-        <S.Overlay isLoading={loading} ref={photoRef}>
+        <S.Overlay noHeaderOption={noHeaderOption} isLoading={loading} ref={photoRef}>
           {windowInnerWidth > 768 && <UserImageAndName profileOption />}
+          {windowInnerWidth <= 768 && noHeaderOption && <UserImageAndName profileOption />}
         </S.Overlay>
       </S.Photo>
     </>
