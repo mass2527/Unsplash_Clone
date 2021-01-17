@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# Unsplash Clone with ReactJS & Typescript
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I built unsplash clone to learn ReactJS with Typescript.
 
-## Available Scripts
+This project is clone project of [**unsplash.com**](https://unsplash.com/).
+If you want to use unsplash API click [**here**](https://unsplash.com/oauth/applications)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## **Preview**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![Main page](./ReadMe/thumbnail.jpg)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+### **`What You can see in this project`**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## **1. Search**
 
-### `npm run build`
+![Search](./ReadMe/search.gif)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## **2. Photographer info**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Search](./ReadMe/photographerInfo.gif)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## **3. Infinite scrolling**
 
-### `npm run eject`
+![Infinite scrolling](./ReadMe/infinite%20scrolling.gif)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## **4. Image download**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Image download](./ReadMe/download.gif)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## **5. Related photos and Collections**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![Related photos and Collections](./ReadMe/related.gif)
 
-## Learn More
+## **6. Responsive Design**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![Responsive Design](./ReadMe/responsive.gif)
