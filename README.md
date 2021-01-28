@@ -11,7 +11,6 @@ If you want to use unsplash API click [**here**](https://unsplash.com/oauth/appl
 
 As unsplash demo API has restricted number of requests, i decided not to deploy this clone. Instead, there's some previews below.
 
-If you want to watch more detail, click [**here**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
 
 ## **Thumbnail**
 
@@ -38,3 +37,6 @@ If you want to watch more detail, click [**here**](https://www.linkedin.com/post
 
 ![Related photos and Collections](./related.gif)
 
+## **Infinite scrolling, responsive design and much more**
+
+If you want to watch more detail, click [**here**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
