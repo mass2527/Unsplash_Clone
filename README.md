@@ -28,20 +28,20 @@ You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unspl
 
 ## **2. Photographer info**
 
-![Search](./assets/photographerInfo.gif)
+![Search](https://mass2527.github.io/assets/ReadMe/photographerInfo.gif)
 
 ## **3. Infinite scrolling**
 
-![Infinite scrolling](./assets/infiniteScrolling.gif)
+![Infinite scrolling](https://mass2527.github.io/assets/ReadMe/infiniteScrolling.gif)
 
 ## **4. Image download**
 
-![Image download](./assets/download.gif)
+![Image download](https://mass2527.github.io/assets/ReadMe/download.gif)
 
 ## **5. Related photos and Collections**
 
-![Related photos and Collections](./assets/related.gif)
+![Related photos and Collections](https://mass2527.github.io/assets/ReadMe/related.gif)
 
 ## **6. Responsive Design**
 
-![Responsive Design](./assets/responsive.gif)
+![Responsive Design](https://mass2527.github.io/assets/ReadMe/responsive.gif)
