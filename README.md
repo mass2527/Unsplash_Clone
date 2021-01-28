@@ -23,7 +23,7 @@ You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unspl
 
 ## **1. Search**
 
-![Search](./assets/search.gif)
+![Search](https://mass2527.github.io/assets/ReadMe/search.gif)
 
 
 ## **2. Photographer info**
