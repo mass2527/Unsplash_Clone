@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getUserPhotos } from '../../../axios/axios';
+import { unsplashApi } from '../../../axios/axios';
 import { PhotoContext, PhotoContextProps } from '../../../Context/Context';
 import Button from '../Material-UI/Button';
 
@@ -103,7 +103,7 @@ const UserProfile: React.FC<Props> = ({ oepnProfile, handleMouseEnter, handleMou
 
   useEffect(() => {
     async function fetchData() {
-      const { data } = await getUserPhotos(accountName);
+      const { data } = await unsplashApi.getUserPhotos(accountName);
       setUserPhotos(data);
     }
     fetchData();

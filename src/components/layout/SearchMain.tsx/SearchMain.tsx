@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { getPhotoBySearchTerm } from '../../../axios/axios';
+import { unsplashApi } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { PhotoContext } from '../../../Context/Context';
@@ -51,7 +51,7 @@ const SearchMain: React.FC = () => {
       try {
         const {
           data: { results },
-        } = await getPhotoBySearchTerm(location.state.searchTerm, 1);
+        } = await unsplashApi.getPhotoBySearchTerm(location.state.searchTerm, 1);
 
         setPhotos(results);
       } catch (error) {}
@@ -71,7 +71,7 @@ const SearchMain: React.FC = () => {
 
         const {
           data: { results },
-        } = await getPhotoBySearchTerm(location.state.searchTerm, currentPage.current);
+        } = await unsplashApi.getPhotoBySearchTerm(location.state.searchTerm, currentPage.current);
 
         setPhotos((photos) => photos.concat(results));
         currentPage.current++;

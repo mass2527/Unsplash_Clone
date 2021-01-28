@@ -1,13 +1,17 @@
 # Unsplash Clone with ReactJS & Typescript
 
-I built unsplash clone to learn ReactJS with Typescript.
+Built unsplash clone using ReactJS and Typescript.
 
 This project is clone project of [**unsplash.com**](https://unsplash.com/).
 If you want to use unsplash API click [**here**](https://unsplash.com/oauth/applications)
 
 ---
 
-## **Preview**
+### **`Live Demo`**
+
+As unsplash demo API has restricted number of requests, i decided not to deploy this clone. Instead, there's some previews below.
+
+## **Thumbnail**
 
 ![Main page](./ReadMe/thumbnail.jpg)
 

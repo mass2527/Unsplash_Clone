@@ -1,7 +1,7 @@
 import React, { useEffect, MouseEvent, useRef, useState, memo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { downloadImageFromURL, trackPhotoDownload, unsplashApi } from '../../../axios/axios';
+import { downloadImageFromURL, unsplashApi } from '../../../axios/axios';
 import DrowdownMenu from '../../shared/Material-UI/DropdownMenu';
 import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
 import PhotoFooter from './PhotoFooter';
@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { PhotoContext } from '../../../Context/Context';
 import Photo from '../../shared/Photo/Photo';
+import ToastContent from './ToastContent';
 
 const S = {
   Modal: styled.div<{ top: number }>`
@@ -57,41 +58,6 @@ const S = {
     @media (max-width: 768px) {
       top: 0px;
     }
-  `,
-
-  Container: styled.div`
-    display: flex;
-    height: 176px;
-  `,
-
-  ContainerLeft: styled.div`
-    width: 120px;
-  `,
-
-  Image: styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-  `,
-
-  ContainerRight: styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #111111;
-    padding: 15px;
-  `,
-
-  Title: styled.h4`
-    font-size: 18px;
-  `,
-
-  Greet: styled.p`
-    font-size: 15px;
-    text-align: center;
   `,
 
   RelatedPhotos: styled.div`
@@ -159,7 +125,7 @@ const Modal: React.FC = () => {
       const {
         data: { results },
       } = await unsplashApi.getRelatedPhotosById(location.state.photoId);
-      console.log('realtedPhotos>>>', results);
+
       setPhoto(data);
       setRelatedPhotos(results);
     }
@@ -167,6 +133,7 @@ const Modal: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('resize', () => handleResize(window.scrollY));
+
     return () => {
       window.removeEventListener('resize', () => handleResize(window.scrollY));
       window.removeEventListener('keydown', handleKeyDown);
@@ -205,33 +172,32 @@ const Modal: React.FC = () => {
 
     let downloadURL;
 
-    if (size === 'full') {
-      downloadURL = photo.urls.full;
-    } else if (size === 'regular') {
-      downloadURL = photo.urls.regular;
-    } else {
-      downloadURL = photo.urls.small;
+    switch (size) {
+      case 'full':
+        downloadURL = photo.urls.full;
+        break;
+      case 'regular':
+        downloadURL = photo.urls.regular;
+        break;
+      case 'small':
+        downloadURL = photo.urls.small;
+        break;
+      default:
+        downloadURL = '';
+        break;
     }
 
     try {
       await downloadImageFromURL(downloadURL, photo.alt_description, photo.user.name);
 
       toast(
-        <S.Container>
-          <S.ContainerLeft>
-            <S.Image src={photo.urls.small} alt={photo.alt_description} />
-          </S.ContainerLeft>
-          <S.ContainerRight>
-            <S.Title>Say thanks 🙌</S.Title>
-            <S.Greet>Give a shoutout to {photo.user.name} </S.Greet>
-          </S.ContainerRight>
-        </S.Container>
+        <ToastContent imageURL={photo.urls.small} altDescription={photo.alt_description} userName={photo.user.name} />
       );
     } catch (error) {
       alert(error);
     } finally {
       // Unsplash recommends API user to send request for increasing number of downloads of the picture
-      trackPhotoDownload(photo.id);
+      unsplashApi.trackPhotoDownload(photo.id);
     }
   }
 

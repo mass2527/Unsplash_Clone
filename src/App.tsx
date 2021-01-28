@@ -7,7 +7,7 @@ interface LocationProps {
   searchTerm: string;
 }
 
-function App() {
+const App: React.FC = () => {
   const location = useLocation<LocationProps>();
 
   return (
@@ -17,6 +17,6 @@ function App() {
       <Route path="/" component={Home} />
     </Switch>
   );
-}
+};
 
 export default App;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { getLatestPhotosByPage, unsplashApi } from '../../../axios/axios';
+import { unsplashApi } from '../../../axios/axios';
 import Photo from '../../shared/Photo/Photo';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { PhotoContext } from '../../../Context/Context';
@@ -34,7 +34,7 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     async function getUnsplashLatestPhotos() {
-      const { data } = await unsplashApi.getLatestPhotos();
+      const { data } = await unsplashApi.getLatestPhotos(1);
 
       setPhotos(data);
     }
@@ -45,13 +45,13 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     if (!divRef.current) return;
-
+    console.log('working');
     const callback = (entries: any, observer: any) => {
       entries.forEach(async (entry: any) => {
         if (!entry.isIntersecting) return;
 
-        const { data } = await getLatestPhotosByPage(currentPage.current);
-
+        const { data } = await unsplashApi.getLatestPhotosByPage(currentPage.current);
+        console.log(data);
         setPhotos((photos) => photos.concat(data));
         currentPage.current++;
       });
