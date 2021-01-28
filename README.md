@@ -11,7 +11,7 @@ If you want to use unsplash API click [**here**](https://unsplash.com/oauth/appl
 
 As unsplash demo API has restricted number of requests, i decided not to deploy this clone. Instead, there's some previews below.
 
-You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
+If you want to watch more detail, click [**here**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
 
 ## **Thumbnail**
 
@@ -21,26 +21,20 @@ You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unspl
 
 ### **`What You can see in this project`**
 
-## **1. Search**
+## **Search**
 
-![Search](./assets/search.gif)
+![Search](./search.gif)
 
-## **2. Photographer info**
+## **Photographer info**
 
-![Search](./assets/photographerInfo.gif)
+![Search](./photographerInfo.gif)
 
-## **3. Infinite scrolling**
 
-![Infinite scrolling](./assets/infiniteScrolling.gif)
+## **Image download**
 
-## **4. Image download**
+![Image download](./download.gif)
 
-![Image download](./assets/download.gif)
+## **Related photos and Collections**
 
-## **5. Related photos and Collections**
+![Related photos and Collections](./related.gif)
 
-![Related photos and Collections](./assets/related.gif)
-
-## **6. Responsive Design**
-
-![Responsive Design](./assets/responsive.gif)
