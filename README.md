@@ -11,7 +11,7 @@ If you want to use unsplash API click [**here**](https://unsplash.com/oauth/appl
 
 As unsplash demo API has restricted number of requests, i decided not to deploy this clone. Instead, there's some previews below.
 
-You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
+You can also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
 
 ## **Thumbnail**
 
