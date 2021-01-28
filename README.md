@@ -15,7 +15,7 @@ You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unspl
 
 ## **Thumbnail**
 
-![Main page](./assets/thumbnail.jpg)
+![Main page](./thumbnail.jpg)
 
 ---
 
