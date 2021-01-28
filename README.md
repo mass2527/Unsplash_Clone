@@ -15,7 +15,7 @@ You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unspl
 
 ## **Thumbnail**
 
-![Main page](./ReadMe/thumbnail.jpg)
+![Main page](./assets/thumbnail.jpg)
 
 ---
 
@@ -23,24 +23,24 @@ You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unspl
 
 ## **1. Search**
 
-![Search](./ReadMe/search.gif)
+![Search](./assets/search.gif)
 
 ## **2. Photographer info**
 
-![Search](./ReadMe/photographerInfo.gif)
+![Search](./assets/photographerInfo.gif)
 
 ## **3. Infinite scrolling**
 
-![Infinite scrolling](./ReadMe/infiniteScrolling.gif)
+![Infinite scrolling](./assets/infiniteScrolling.gif)
 
 ## **4. Image download**
 
-![Image download](./ReadMe/download.gif)
+![Image download](./assets/download.gif)
 
 ## **5. Related photos and Collections**
 
-![Related photos and Collections](./ReadMe/related.gif)
+![Related photos and Collections](./assets/related.gif)
 
 ## **6. Responsive Design**
 
-![Responsive Design](./ReadMe/responsive.gif)
+![Responsive Design](./assets/responsive.gif)
