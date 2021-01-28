@@ -11,7 +11,7 @@ If you want to use unsplash API click [**here**](https://unsplash.com/oauth/appl
 
 As unsplash demo API has restricted number of requests, i decided not to deploy this clone. Instead, there's some previews below.
 
-You can also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
+You also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_unsplash-reactjs-activity-6756093010494267392-nQEV)
 
 ## **Thumbnail**
 
@@ -23,25 +23,24 @@ You can also watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_u
 
 ## **1. Search**
 
-![Search](https://mass2527.github.io/assets/ReadMe/search.gif)
-
+![Search](./assets/search.gif)
 
 ## **2. Photographer info**
 
-![Search](https://mass2527.github.io/assets/ReadMe/photographerInfo.gif)
+![Search](./assets/photographerInfo.gif)
 
 ## **3. Infinite scrolling**
 
-![Infinite scrolling](https://mass2527.github.io/assets/ReadMe/infiniteScrolling.gif)
+![Infinite scrolling](./assets/infiniteScrolling.gif)
 
 ## **4. Image download**
 
-![Image download](https://mass2527.github.io/assets/ReadMe/download.gif)
+![Image download](./assets/download.gif)
 
 ## **5. Related photos and Collections**
 
-![Related photos and Collections](https://mass2527.github.io/assets/ReadMe/related.gif)
+![Related photos and Collections](./assets/related.gif)
 
 ## **6. Responsive Design**
 
-![Responsive Design](https://mass2527.github.io/assets/ReadMe/responsive.gif)
+![Responsive Design](./assets/responsive.gif)
