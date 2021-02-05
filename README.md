@@ -1,4 +1,4 @@
-# **Unsplash Clone** <img src="https://global-uploads.webflow.com/5b0c471ddb589cf22d4477a4/5cd716028463a5a1d1b1e73d_unsplash-app-icon-2.png" width="30">
+# **Unsplash Clone** <img src="https://global-uploads.webflow.com/5b0c471ddb589cf22d4477a4/5cd716028463a5a1d1b1e73d_unsplash-app-icon-2.png" width="40">
 
 This is a clone project of [**Unsplash**](https://unsplash.com) made with ReactJS and Typescript.
 
@@ -23,7 +23,6 @@ If you want to watch video click [**here**](https://www.linkedin.com/posts/dh-ki
 - To learn how to use typescript with reactjs
 - To get familiar with using API
 
-
 <br/>
 
 ### **Developement stack**
@@ -43,49 +42,42 @@ If you want to watch video click [**here**](https://www.linkedin.com/posts/dh-ki
 
 #### **Main page**
 
-- `Shows all latest images of unsplash (infinite scrolling)`
-- `Can watch photographers information by hovering`
-- `Can search all images`
+- `Shows latest images of unsplash (infinite scrolling)`
 
 ![main page](./thumbnail.jpg)
 
 <br/>
 
-![modal](src/readme/chrome_PzbQGseM3u.png)
+#### **search images**
+
+- `By entering keyword, you can see images that you want`
+
+![search images](./search.gif)
 
 <br/>
 
-#### **Profile page**
+#### **Photographer information**
 
-- `Can watch all the posts that user has created and posts that user has liked.`
-- `Can watch user's followings and follwers`
-- `If you are owner of that account, you can edit profile image and introduction`
+- `By hovering mouse on specific image, you can see photographer's information`
 
-![profile page](src/readme/chrome_4aucYOEYsu.png)
+![Photographer information](./photographerInfo.gif)
 
 <br/>
 
-#### **DM page**
+#### **download image**
 
-- `Can search user and start conversation in realtime`
+- `Can download any image by clicking size of image`
 
-![DM page](src/readme/chrome_2dGBqYMLRC.png)
+![download image](./download.gif)
 
 <br/>
 
-#### **Responsive**
+#### **./related.gif**
 
-- `Fully responsive layout for mobile user`
+- `Also related photos and collections are avaliable`
 
-![responsive main](src/readme/chrome_9VMyuV31PM.png)
-<br/>
-<br/>
-![responsive profile](src/readme/chrome_6afXqSTh3z.png)
-<br/>
-<br/>
-![responsive dm](src/readme/chrome_qZ973cfUVY.png)
-<br/>
-<br/>
+![Related photos and Collections](./related.gif)
+
 
 ### **What did i learn**
 
@@ -105,7 +97,5 @@ Found out my brain works better when i am watcing clean code.
 As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
 
 
-![Search](./search.gif)
-![Search](./photographerInfo.gif)
-![Image download](./download.gif)
-![Related photos and Collections](./related.gif)
+
+
