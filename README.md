@@ -4,7 +4,7 @@ This is a clone project of [**Unsplash**](https://unsplash.com) made with ReactJ
 
 Unfortunately, as [**unsplash demo api**](https://unsplash.com/oauth/applications) restricts the number of requests per hour, i decided not to deploy demo of this clone.
 
-If you want to watch video click [**here**](https://www.linkedin.com/posts/dh-kim-733227200_reactjs-instagram-linkedin-activity-6759438400706764800-bNwH)
+If you want to watch video click [**here**](https://www.linkedin.com/feed/update/urn:li:activity:6756093010494267392/)
 
 <br/>
 
