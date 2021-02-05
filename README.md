@@ -66,13 +66,13 @@ If you want to watch video click [**here**](https://www.linkedin.com/posts/dh-ki
 
 #### **download image**
 
-- `Can download any image by clicking size of image`
+- `You Can download any image by clicking size of image`
 
 ![download image](./download.gif)
 
 <br/>
 
-#### **./related.gif**
+#### **Related photos and Collections**
 
 - `Also related photos and collections are avaliable`
 
@@ -81,21 +81,12 @@ If you want to watch video click [**here**](https://www.linkedin.com/posts/dh-ki
 
 ### **What did i learn**
 
-`1. learned importance of organized folder structure, clear variable name.`
+`1. learned importance global state management`
 
-As the size of app grows, rewriting code is imperative since i need to fix my code whenever i found a bug.  
- In this kind of moment, organized folder structure and clear variable name make me easily find the file.
+As i made lots of small components to make every single component as simple as possible, sometimes, i needed to pass down the props sevaral times to use it in descendent component.   
+I felt i need to learn how to manage global state using context API or redux.
 
-`2. learned importance of code refactoring.`
+`2. learned necessity of optimization`
 
-Found out my brain works better when i am watcing clean code.  
- However, when i was trying to write some code on messy code, my brain was fried and don't want to think anymore.  
- Since then, i did code refactoring as much as i can.
-
-`3. learned importance of DB structure.`
-
-As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
-
-
-
-
+Honestly, before i made this clone, i didn't realize how important optimization is in react application. I just thought that since reactjs is super fast, i don't even need to think about optimization. However, As i sent lots of API requests, i felt it is getting slower.
+So i thought that i need to learn more about how to optimize react app by using useCallback, useMemo, Memo, etc...
